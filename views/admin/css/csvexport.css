@@ -1,0 +1,18 @@
+        input[type=button].blue {
+            background: #22546b;
+            background: -webkit-linear-gradient(top, #22546b, #102d3b);
+            background: -moz-linear-gradient(top, #22546b, #102d3b);
+            background: -o-linear-gradient(top, #22546b, #102d3b);
+            background: linear-gradient(to bottom, #22546b, #102d3b);
+            -webkit-box-shadow: 0px 1px 0px 0px #526c80 inset, 0px -1px 0px 0px #142233 inset, 0px 2px 2px 0px #d4d4d4;
+            -moz-box-shadow: 0px 1px 0px 0px #526c80 inset, 0px -1px 0px 0px #142233 inset, 0px 2px 2px 0px #d4d4d4;
+            box-shadow: 0px 1px 0px 0px #526c80 inset, 0px -1px 0px 0px #142233 inset, 0px 2px 2px 0px #d4d4d4;
+            border: 1px solid #11303F;
+            color:#fff;
+        }
+        
+        input[type=button].blue:hover {
+            -moz-box-shadow: 0px 1px 0px 0px #526c80 inset, 0px -1px 0px 0px #142233 inset, 0px 0px 10px 0px #102d3b, 0px 2px 2px 0px #d4d4d4;
+            -webkit-box-shadow: 0px 1px 0px 0px #526c80 inset, 0px -1px 0px 0px #142233 inset, 0px 0px 10px 0px #102d3b, 0px 2px 2px 0px #d4d4d4;
+            box-shadow: 0px 1px 0px 0px #526c80 inset, 0px -1px 0px 0px #142233 inset, 0px 0px 10px 0px #102d3b, 0px 2px 2px 0px #d4d4d4;
+        }
