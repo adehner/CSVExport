@@ -16,7 +16,7 @@ class CSVExport_ExportController extends Omeka_Controller_AbstractActionControll
 
     // Get all element sets except for legacy files data.
     $table = get_db()->getTable('ElementSet');
-    $elementSetsAll = $table->fetchObjects($table->getSelect()->where('record_type <> "File"')->orWhere('record_type IS NULL'));
+    $elementSetsAll = $table->fetchObjects($table->getSelect());
     $elementSets = array();
 
     // Filter by those set in config UI.

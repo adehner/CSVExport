@@ -41,7 +41,7 @@ class CSVExportPlugin extends Omeka_Plugin_AbstractPlugin
   {
     $settings = unserialize(get_option('csv_export_settings'));
     $table = get_db()->getTable('ElementSet');
-    $elementSetsAll = $table->fetchObjects($table->getSelect()->where('record_type <> "File"')->orWhere('record_type IS NULL'));
+    $elementSetsAll = $table->fetchObjects($table->getSelect());
     include 'config-form.php';
   }
 
