@@ -37,6 +37,7 @@ class CSVExportPlugin extends Omeka_Plugin_AbstractPlugin
     {
         $table = get_db()->getTable('ElementSet');
         $dublinCore = $table->findByName('Dublin Core');
+        // Set Dublin core first.
         if (isset($dublinCore->id)) {
             $this->_options['csv_export_settings']['elementSets'][$dublinCore->id] = true;
         }
@@ -59,6 +60,13 @@ class CSVExportPlugin extends Omeka_Plugin_AbstractPlugin
         $settings = unserialize(get_option('csv_export_settings'));
         $table = get_db()->getTable('ElementSet');
         $elementSetsAll = $table->fetchObjects($table->getSelect());
+
+        // For security, remove element sets that are not "All" or "Item".
+        foreach ($elementSetsAll as $key => $elementSet) {
+            if (!in_array($elementSet->record_type, array(null, 'Item'))) {
+                unset($elementSetsAll[$key]);
+            }
+        }
 
         $view = get_view();
         echo $view->partial(

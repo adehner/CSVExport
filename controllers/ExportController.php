@@ -2,6 +2,7 @@
 
 class CSVExport_ExportController extends Omeka_Controller_AbstractActionController
 {
+    protected $multivalueSeparator = '; ';
 
     public function csvAction()
     {
@@ -14,27 +15,8 @@ class CSVExport_ExportController extends Omeka_Controller_AbstractActionControll
             $items = get_records('Item', array(), 0);
         }
 
-        // Get all element sets except for legacy files data.
-        $table = get_db()->getTable('ElementSet');
-        $elementSetsAll = $table->fetchObjects($table->getSelect());
-        $elementSets = array();
-
-        // Filter by those set in config UI.
-        $settings = unserialize(get_option('csv_export_settings'));
-        foreach ($elementSetsAll as $elementSet) {
-            if (array_key_exists($elementSet->id, $settings['elementSets'])) {
-                $elementSets[$elementSet->id] = $elementSet;
-            }
-        }
-
-        // get all fields from a specific element set (eg. dublin core)
-        $elements = array();
-        foreach ($elementSets as $elementSet) {
-            $elements = array_merge(
-                $elements,
-                get_db()->getTable('Element')->findBySet($elementSet->name)
-            );
-        }
+        // Cache element set info to speed up loop.
+        $elements = $this->prepareElements();
 
         $result = array();
         set_loop_records('items', $items);
@@ -46,24 +28,23 @@ class CSVExport_ExportController extends Omeka_Controller_AbstractActionControll
             // get collection name and add it to the csv output
             $result[$id]['Collection Name'] = metadata($item, 'collection name');
 
-            // Cache element set info to speed up loop.
             foreach ($elements as $element) {
-                $elementSetName = $elementSets[$element->element_set_id]->name;
-                $element = $element->name;
-                $result[$id][$element] = metadata($item, array($elementSetName, $element), array('all' => true));
-                if (count($result[$id][$element]) == 1) {
+                $elementSetName = $element[0];
+                $elementName = $element[1];
+                // $result[$id][$elementName] = $item->getElementTexts($elementSetName, $elementName);
+                $result[$id][$elementName] = metadata($item, $element, array('all' => true));
+                foreach ($result[$id][$elementName] as $k => $v) {
+                    $result[$id][$elementName][$k] = (string) $v;
+                }
+                if (count($result[$id][$elementName]) == 1) {
                     // the field has 1 value, get it
-                    $result[$id][$element] = $result[$id][$element][0];
-                } elseif (count($result[$id][$element]) > 1) {
-                    // if a field has multiple values, parse them
-                    $results = '';
-                    foreach ($result[$id][$element] as $value) {
-                        $results .= $value . '; ';
-                    }
-                    $result[$id][$element] = rtrim($results, "; ");
+                    $result[$id][$elementName] = reset($result[$id][$elementName]);
+                } elseif (count($result[$id][$elementName]) > 1) {
+                    // if a field has multiple values, parse them to add a multivalue separator.
+                    $result[$id][$elementName] = implode($this->multivalueSeparator, $result[$id][$elementName]);
                 } else {
                     // this field is empty/null
-                    $result[$id][$element] = null;
+                    $result[$id][$elementName] = null;
                 }
             }
         }
@@ -87,5 +68,49 @@ class CSVExport_ExportController extends Omeka_Controller_AbstractActionControll
             $items = $itemTable->findBy($_REQUEST);
             return $items;
         }
+    }
+
+    /**
+     * Prepare the list of element names one time only.
+     *
+     * @return array
+     */
+    function prepareElements()
+    {
+        // Get all element sets except for legacy files data.
+        $table = get_db()->getTable('ElementSet');
+        $elementSetsAll = $table->fetchObjects($table->getSelect());
+
+        // Filter by those set in config UI, and keep item only.
+        $elementSets = array();
+        $settings = unserialize(get_option('csv_export_settings'));
+        foreach ($elementSetsAll as $elementSet) {
+            if (array_key_exists($elementSet->id, $settings['elementSets'])) {
+                // For security, remove element sets that are not "All" or "Item".
+                if (in_array($elementSet->record_type, array(null, 'Item'))) {
+                    $elementSets[$elementSet->id] = $elementSet;
+                }
+            }
+        }
+
+        // Get all fields from each specific element set (eg. Dublin Core).
+        $elements = array();
+        foreach ($elementSets as $elementSet) {
+            $elements = array_merge(
+                $elements,
+                get_db()->getTable('Element')->findBySet($elementSet->name)
+            );
+        }
+
+        // Simplify the elements array one time.
+        $simpleElements = array();
+        foreach ($elements as $element) {
+            $simpleElements[$element->id] = array(
+                $elementSets[$element->element_set_id]->name,
+                $element->name
+            );
+        }
+
+        return $simpleElements;
     }
 }
