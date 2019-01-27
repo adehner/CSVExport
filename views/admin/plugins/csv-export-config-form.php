@@ -1,5 +1,30 @@
-<fieldset id="csv-export-settings">
-    <legend><?php echo __('Element sets'); ?></legend>
+<?php
+/**
+ * @var Omeka_View $this
+ * @var array $elementSets
+ */
+?>
+<fieldset id="csv-export-output"><legend><?php echo __('Export'); ?></legend>
+    <?php $metadata = array(
+        'id' => __('Id'),
+        'collection' => __('Collection Name'),
+        'files' => __('Files'),
+        'file_sources' => __('File Sources'),
+        'tags' => __('Tags'),
+        'elements' => __('Elements'),
+    ); ?>
+    <div class="field">
+        <div class="two columns alpha">
+            <?php echo $this->formLabel('csv_export_metadata',
+                __('Metadata to output')); ?>
+        </div>
+        <div class="inputs five columns omega">
+            <div class="input-block">
+                <?php echo $this->formMultiCheckbox('csv_export_metadata', json_decode(get_option('csv_export_metadata'), true), null, $metadata); ?>
+            </div>
+        </div>
+    </div>
+
     <div class="field">
         <div class="two columns alpha">
             <?php echo $this->formLabel('elementSets',
@@ -9,19 +34,15 @@
             <p class="explanation">
                 <?php echo __('Check the box below to include a given element set in exports.'); ?>
             </p>
-            <ul class="checkboxes">
-                <?php foreach($elementSetsAll as $elementSet):?>
-                  <li style="list-style-type: none">
-                    <?php echo $this->formCheckbox("elementSets[{$elementSet->id}]", null, array('checked' => array_key_exists($elementSet->id, $settings['elementSets']))); ?>
-                    <?php echo __($elementSet->name); ?>
-                  </li>
-            <?php endforeach; ?>
-            </ul>
+            <div class="input-block">
+                <?php echo $this->formMultiCheckbox('csv_export_element_sets', json_decode(get_option('csv_export_element_sets'), true), null, $elementSets); ?>
+            </div>
         </div>
     </div>
-</fieldseet>
 
-<fieldset id="csv-export-output"><legend><?php echo __('Output'); ?></legend>
+</fieldset>
+
+<fieldset id="csv-export-format"><legend><?php echo __('Format'); ?></legend>
     <div class="field">
         <div class="two columns alpha">
             <?php echo $this->formLabel('csv_export_header_name',
