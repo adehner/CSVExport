@@ -7,9 +7,10 @@
 <fieldset id="csv-export-output"><legend><?php echo __('Export'); ?></legend>
     <?php $metadata = array(
         'id' => __('Id'),
-        'collection' => __('Collection Name'),
+        'item_type' => __('Item type name'),
+        'collection' => __('Collection name'),
         'files' => __('Files'),
-        'file_sources' => __('File Sources'),
+        'file_sources' => __('File sources'),
         'tags' => __('Tags'),
         'elements' => __('Elements'),
     ); ?>

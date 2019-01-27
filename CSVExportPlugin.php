@@ -28,6 +28,7 @@ class CSVExportPlugin extends Omeka_Plugin_AbstractPlugin
     protected $_options = array(
         'csv_export_metadata' => array(
             'id',
+            'item_type_name',
             'collection',
             'files',
             // 'file_sources',

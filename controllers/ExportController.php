@@ -128,6 +128,11 @@ class CSVExport_ExportController extends Omeka_Controller_AbstractActionControll
                 $data['id'] = array($record->id);
                 break;
 
+            case 'item_type':
+                $value = $record->getProperty('item_type_name');
+                $data['Item Type'] = $value ? array($value) : array();
+                break;
+
             case 'collection':
                 $value = metadata($record, 'collection name');
                 $data['Collection Name'] = $value ? array($value) : array();
