@@ -54,6 +54,17 @@
             </p>
         </div>
     </div>
+
+    <div class="field">
+        <div class="two columns alpha">
+            <?php echo $this->formLabel('csv_export_all_elements',
+                __('Return all elements, even unused')); ?>
+        </div>
+        <div class="inputs five columns omega">
+            <?php echo $this->formCheckbox('csv_export_all_elements', true,
+                array('checked' => (bool) get_option('csv_export_all_elements'))); ?>
+        </div>
+    </div>
 </fieldset>
 
 <fieldset id="fieldset-csv-format"><legend><?php echo __('Csv Format'); ?></legend>

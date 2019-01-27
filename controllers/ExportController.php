@@ -6,11 +6,9 @@ class CSVExport_ExportController extends Omeka_Controller_AbstractActionControll
 
     public function csvAction()
     {
-        $search = false;
-
-        if (isset($_GET['search'])) {
+        $search = isset($_GET['search']);
+        if ($search) {
             $items = $this->csv_search($_GET);
-            $search = true;
         } else {
             $items = get_records('Item', array(), 0);
         }
@@ -54,11 +52,11 @@ class CSVExport_ExportController extends Omeka_Controller_AbstractActionControll
             }
         }
 
-        $this->view->assign('result', $result);
         $this->view->assign('search', $search);
+        $this->view->assign('result', $result);
     }
 
-    function csv_search($terms)
+    protected function csv_search($terms)
     {
         $itemTable = $this->_helper->db->getTable('Item');
         if (isset($_GET['search'])) {
@@ -80,10 +78,11 @@ class CSVExport_ExportController extends Omeka_Controller_AbstractActionControll
      *
      * @return array
      */
-    function prepareElements()
+    protected function prepareElements()
     {
         // Get all element sets except for legacy files data.
-        $table = get_db()->getTable('ElementSet');
+        $db = get_db();
+        $table = $db->getTable('ElementSet');
         $elementSetsAll = $table->fetchObjects($table->getSelect());
 
         // Filter by those set in config UI, and keep item only.
@@ -100,10 +99,11 @@ class CSVExport_ExportController extends Omeka_Controller_AbstractActionControll
 
         // Get all fields from each specific element set (eg. Dublin Core).
         $elements = array();
+        $table = $db->getTable('Element');
         foreach ($elementSets as $elementSet) {
             $elements = array_merge(
                 $elements,
-                get_db()->getTable('Element')->findBySet($elementSet->name)
+                $table->findBySet($elementSet->name)
             );
         }
 
@@ -113,6 +113,20 @@ class CSVExport_ExportController extends Omeka_Controller_AbstractActionControll
             $simpleElements[$element->id] = array(
                 $elementSets[$element->element_set_id]->name,
                 $element->name
+            );
+        }
+
+        $allElements = (bool) get_option('csv_export_all_elements');
+        if (!$allElements) {
+            $sql = <<<SQL
+SELECT DISTINCT(element_id)
+FROM `omeka_element_texts`
+WHERE record_type IS NULL OR record_type = 'Item'
+SQL;
+            $usedElements = $db->fetchCol($sql);
+            $simpleElements = array_intersect_key(
+                $simpleElements,
+                array_flip($usedElements)
             );
         }
 
