@@ -3,6 +3,10 @@ $title = option('site_title');
 $title = urlencode($title);
 // date_default_timezone_set('America/Los_Angeles');
 
+$delimiter = get_option('csv_export_delimiter') ?: ',';
+if ($delimiter === 'tab') $delimiter = "\t";
+$enclosure = get_option('csv_export_enclosure') ?: '"';
+
 if ($search) {
     $fileName = $title . 'Export' . date("Y-m-d") .'T' . date("H:i:s") . '.csv';
 } else {
@@ -18,15 +22,11 @@ header("Pragma: public");
 
 $file = fopen( 'php://output', 'w' );
 
-$header = false;
+$headers = reset($result);
+fputcsv($file, array_keys($headers), $delimiter, $enclosure);
 
 foreach ($result as $data) {
-    if (!$header) {
-        fputcsv($file, array_keys($data), ',', '"');
-        $header = true;
-    }
-
-    fputcsv($file, $data, ',', '"');
+    fputcsv($file, $data, $delimiter, $enclosure);
 }
 
 fclose($file);

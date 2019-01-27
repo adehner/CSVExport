@@ -18,6 +18,8 @@ class CSVExport_ExportController extends Omeka_Controller_AbstractActionControll
         // Cache element set info to speed up loop.
         $elements = $this->prepareElements();
 
+        $separator = get_option('csv_export_separator') ?: $this->multivalueSeparator;
+
         $result = array();
         set_loop_records('items', $items);
         foreach (loop('items') as $item) {
@@ -31,20 +33,21 @@ class CSVExport_ExportController extends Omeka_Controller_AbstractActionControll
             foreach ($elements as $element) {
                 $elementSetName = $element[0];
                 $elementName = $element[1];
+                $header = $elementName;
                 // $result[$id][$elementName] = $item->getElementTexts($elementSetName, $elementName);
-                $result[$id][$elementName] = metadata($item, $element, array('all' => true));
-                foreach ($result[$id][$elementName] as $k => $v) {
-                    $result[$id][$elementName][$k] = (string) $v;
+                $result[$id][$header] = metadata($item, $element, array('all' => true));
+                foreach ($result[$id][$header] as $k => $v) {
+                    $result[$id][$header][$k] = (string) $v;
                 }
-                if (count($result[$id][$elementName]) == 1) {
+                if (count($result[$id][$header]) == 1) {
                     // the field has 1 value, get it
-                    $result[$id][$elementName] = reset($result[$id][$elementName]);
-                } elseif (count($result[$id][$elementName]) > 1) {
+                    $result[$id][$header] = reset($result[$id][$header]);
+                } elseif (count($result[$id][$header]) > 1) {
                     // if a field has multiple values, parse them to add a multivalue separator.
-                    $result[$id][$elementName] = implode($this->multivalueSeparator, $result[$id][$elementName]);
+                    $result[$id][$header] = implode($separator, $result[$id][$header]);
                 } else {
                     // this field is empty/null
-                    $result[$id][$elementName] = null;
+                    $result[$id][$header] = null;
                 }
             }
         }
