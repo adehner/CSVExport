@@ -55,10 +55,14 @@ class CSVExport_ExportController extends Omeka_Controller_AbstractActionControll
                     }
                 }
             }
+
+            $headers = reset($result);
+            $headers = array_keys($headers);
         }
-        // For multiple values, the same header will be used multiple times, so
-        // the output will be different.
+
+        // For multiple values, the same header will be used multiple times.
         else {
+            // First, prepare all values.
             foreach (loop('items') as $item) {
                 $id = metadata($item, 'ID');
                 $result[$id]['id'] = array($id);
@@ -70,7 +74,42 @@ class CSVExport_ExportController extends Omeka_Controller_AbstractActionControll
                     $result[$id][$header] = metadata($item, $element, array('all' => true, 'no_filter' => $noFilter));
                 }
             }
-            $headers = $this->countHeaders($result);
+
+            // Second, get max number of values by column.
+            $headerCounts = $this->countHeaders($result);
+            $allElements = (bool) get_option('csv_export_all_elements');
+            // Keep at least one header, even if the column is empty.
+            if ($allElements) {
+                foreach ($headerCounts as $header => $count) {
+                    $headers[] = $header;
+                    for ($i = 1; $i < $count; $i++) {
+                        $headers[] = $header;
+                    }
+                }
+            }
+            // Only used headers.
+            else {
+                foreach ($headerCounts as $header => $count) {
+                    for ($i = 1; $i <= $count; $i++) {
+                        $headers[] = $header;
+                    }
+                }
+            }
+
+            // Third, prepare the rows according to the max number of values.
+            foreach ($result as $key => $data) {
+                $row = array();
+                foreach ($data as $header => $values) {
+                    if (in_array($header, $headers)) {
+                        $values = array_values($values);
+                        $max = $headerCounts[$header];
+                        for ($i = 0; $i < $max; $i++) {
+                            $row[] = isset($values[$i]) ? $values[$i] : null;
+                        }
+                    }
+                }
+                $result[$key] = $row;
+            }
         }
 
         $this->view->assign('search', $search);
