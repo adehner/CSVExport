@@ -17,6 +17,27 @@
     </div>
 </fieldseet>
 
+<fieldset id="csv-export-output">
+    <div class="field">
+        <div class="two columns alpha">
+            <?php echo $this->formLabel('csv_export_header_name',
+                __('Header name')); ?>
+        </div>
+        <div class="inputs five columns omega">
+            <?php echo $this->formRadio('csv_export_header_name',
+                get_option('csv_export_header_name'),
+                null,
+                array(
+                    'simple' => __('Element name only ("Title")'),
+                    'full' => __('Element set name and element name ("Dublin Core : Title")'),
+                )); ?>
+            <p class="explanation">
+                <?php echo __('This option is useful when there are duplicate element names.'); ?>
+            </p>
+        </div>
+    </div>
+</fieldset>
+
 <fieldset id="fieldset-csv-format"><legend><?php echo __('Csv Format'); ?></legend>
     <div class="field">
         <div class="two columns alpha">

@@ -28,6 +28,7 @@ class CSVExportPlugin extends Omeka_Plugin_AbstractPlugin
         'csv_export_settings' => array(
             'elementSets' => array(),
         ),
+        'csv_export_header_name' => 'simple',
         'csv_export_delimiter' => ',',
         'csv_export_enclosure' => '"',
         'csv_export_separator' => '; ',
@@ -44,10 +45,8 @@ class CSVExportPlugin extends Omeka_Plugin_AbstractPlugin
         if (isset($dublinCore->id)) {
             $this->_options['csv_export_settings']['elementSets'][$dublinCore->id] = true;
         }
-        set_option('csv_export_settings', serialize($this->_options['csv_export_settings'));
-        set_option('csv_export_delimiter', $this->_options['csv_export_delimiter']);
-        set_option('csv_export_enclosure', $this->_options['csv_export_enclosure']);
-        set_option('csv_export_separator', $this->_options['csv_export_separator']);
+        $this->_options['csv_export_settings'] = serialize($this->_options['csv_export_settings']);
+        $this->_installOptions();
     }
 
     /**

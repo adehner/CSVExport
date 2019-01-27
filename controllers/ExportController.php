@@ -19,6 +19,7 @@ class CSVExport_ExportController extends Omeka_Controller_AbstractActionControll
         $elements = $this->prepareElements();
 
         $separator = get_option('csv_export_separator') ?: $this->multivalueSeparator;
+        $full = get_option('csv_export_header_name') === 'full';
 
         $result = array();
         set_loop_records('items', $items);
@@ -33,7 +34,7 @@ class CSVExport_ExportController extends Omeka_Controller_AbstractActionControll
             foreach ($elements as $element) {
                 $elementSetName = $element[0];
                 $elementName = $element[1];
-                $header = $elementName;
+                $header = $full ? $elementSetName . ' : ' . $elementName : $elementName;
                 // $result[$id][$elementName] = $item->getElementTexts($elementSetName, $elementName);
                 $result[$id][$header] = metadata($item, $element, array('all' => true));
                 foreach ($result[$id][$header] as $k => $v) {
