@@ -1,4 +1,3 @@
-<?php $view = get_view(); ?>
 <div id="csv-export-settings">
 <h2><?php echo __('Element Sets to include'); ?></h2>
 
@@ -10,7 +9,7 @@
             <ul class="checkboxes">
                 <?php foreach($elementSetsAll as $elementSet):?>
                   <li style="list-style-type: none">
-                    <?php echo $view->formCheckbox("elementSets[{$elementSet->id}]", null, array('checked' => array_key_exists($elementSet->id, $settings['elementSets']))); ?>
+                    <?php echo $this->formCheckbox("elementSets[{$elementSet->id}]", null, array('checked' => array_key_exists($elementSet->id, $settings['elementSets']))); ?>
                     <?php echo __($elementSet->name); ?>
                   </li>
             <?php endforeach; ?>
