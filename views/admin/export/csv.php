@@ -1,7 +1,7 @@
 <?php
 $title = option('site_title');
 $title = urlencode($title);
-date_default_timezone_set('America/Los_Angeles');
+// date_default_timezone_set('America/Los_Angeles');
 
 if ($search) {
     $fileName = $title . 'Export' . date("Y-m-d") .'T' . date("H:i:s") . '.csv';
