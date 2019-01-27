@@ -1,6 +1,10 @@
 <fieldset id="csv-export-settings">
-    <h2><?php echo __('Element Sets to include'); ?></h2>
+    <legend><?php echo __('Element sets'); ?></legend>
     <div class="field">
+        <div class="two columns alpha">
+            <?php echo $this->formLabel('elementSets',
+                __('Element Sets to include')); ?>
+        </div>
         <div class="inputs five columns omega">
             <p class="explanation">
                 <?php echo __('Check the box below to include a given element set in exports.'); ?>
@@ -17,7 +21,7 @@
     </div>
 </fieldseet>
 
-<fieldset id="csv-export-output">
+<fieldset id="csv-export-output"><legend><?php echo __('Output'); ?></legend>
     <div class="field">
         <div class="two columns alpha">
             <?php echo $this->formLabel('csv_export_header_name',
@@ -33,6 +37,20 @@
                 )); ?>
             <p class="explanation">
                 <?php echo __('This option is useful when there are duplicate element names.'); ?>
+            </p>
+        </div>
+    </div>
+
+    <div class="field">
+        <div class="two columns alpha">
+            <?php echo $this->formLabel('csv_export_no_filter',
+                __('Skip Omeka filters')); ?>
+        </div>
+        <div class="inputs five columns omega">
+            <?php echo $this->formCheckbox('csv_export_no_filter', true,
+                array('checked' => (bool) get_option('csv_export_no_filter'))); ?>
+            <p class="explanation">
+                <?php echo __('This option avoids to call the filters of the plugins (in particular fixes compatibility with the plugin SearchByMetadata).'); ?>
             </p>
         </div>
     </div>

@@ -20,6 +20,7 @@ class CSVExport_ExportController extends Omeka_Controller_AbstractActionControll
 
         $separator = get_option('csv_export_separator') ?: $this->multivalueSeparator;
         $full = get_option('csv_export_header_name') === 'full';
+        $noFilter = (bool) get_option('csv_export_no_filter');
 
         $result = array();
         set_loop_records('items', $items);
@@ -35,11 +36,11 @@ class CSVExport_ExportController extends Omeka_Controller_AbstractActionControll
                 $elementSetName = $element[0];
                 $elementName = $element[1];
                 $header = $full ? $elementSetName . ' : ' . $elementName : $elementName;
-                // $result[$id][$elementName] = $item->getElementTexts($elementSetName, $elementName);
-                $result[$id][$header] = metadata($item, $element, array('all' => true));
-                foreach ($result[$id][$header] as $k => $v) {
-                    $result[$id][$header][$k] = (string) $v;
-                }
+                $result[$id][$header] = metadata($item, $element, array('all' => true, 'no_filter' => $noFilter));
+                // $result[$id][$header] = $item->getElementTexts($elementSetName, $elementName);
+                // foreach ($result[$id][$header] as $k => $v) {
+                //     $result[$id][$header][$k] = (string) $v;
+                // }
                 if (count($result[$id][$header]) == 1) {
                     // the field has 1 value, get it
                     $result[$id][$header] = reset($result[$id][$header]);
