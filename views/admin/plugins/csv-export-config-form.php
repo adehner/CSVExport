@@ -65,6 +65,23 @@
                 array('checked' => (bool) get_option('csv_export_all_elements'))); ?>
         </div>
     </div>
+
+    <div class="field">
+        <div class="two columns alpha">
+            <?php echo $this->formLabel('csv_export_single_value',
+                __('Return a single value in each column')); ?>
+        </div>
+        <div class="inputs five columns omega">
+            <?php echo $this->formCheckbox('csv_export_single_value', true,
+                array('checked' => (bool) get_option('csv_export_single_value'))); ?>
+            <p class="explanation">
+                <?php echo __('If checked, each cell will have only one value, so there will be multiple columns for each element.'); ?>
+                <br />
+                <?php echo __('Warning: if there are many files, tags and elements by record, the number of columns can be very big and not manageable by spreadsheet software (1024 for LibreOffice, 256 for Excel 2003, 16384 for Excel 2007.'); ?>
+                <?php echo __('There is no issue when the csv is managed by script or with a standard editor.'); ?>
+            </p>
+        </div>
+    </div>
 </fieldset>
 
 <fieldset id="fieldset-csv-format"><legend><?php echo __('Csv Format'); ?></legend>

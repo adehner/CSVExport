@@ -19,41 +19,82 @@ class CSVExport_ExportController extends Omeka_Controller_AbstractActionControll
         $separator = get_option('csv_export_separator') ?: $this->multivalueSeparator;
         $full = get_option('csv_export_header_name') === 'full';
         $noFilter = (bool) get_option('csv_export_no_filter');
+        $mutipleValues = !get_option('csv_export_single_value');
 
+        $headers = array();
         $result = array();
         set_loop_records('items', $items);
-        foreach (loop('items') as $item) {
-            // get omeka id and add it to the csv output
-            $id = metadata($item, 'ID');
-            $result[$id]['id'] = $id;
 
-            // get collection name and add it to the csv output
-            $result[$id]['Collection Name'] = metadata($item, 'collection name');
+        if ($mutipleValues) {
+            foreach (loop('items') as $item) {
+                // get omeka id and add it to the csv output
+                $id = metadata($item, 'ID');
+                $result[$id]['id'] = $id;
 
-            foreach ($elements as $element) {
-                $elementSetName = $element[0];
-                $elementName = $element[1];
-                $header = $full ? $elementSetName . ' : ' . $elementName : $elementName;
-                $result[$id][$header] = metadata($item, $element, array('all' => true, 'no_filter' => $noFilter));
-                // $result[$id][$header] = $item->getElementTexts($elementSetName, $elementName);
-                // foreach ($result[$id][$header] as $k => $v) {
-                //     $result[$id][$header][$k] = (string) $v;
-                // }
-                if (count($result[$id][$header]) == 1) {
-                    // the field has 1 value, get it
-                    $result[$id][$header] = reset($result[$id][$header]);
-                } elseif (count($result[$id][$header]) > 1) {
-                    // if a field has multiple values, parse them to add a multivalue separator.
-                    $result[$id][$header] = implode($separator, $result[$id][$header]);
-                } else {
-                    // this field is empty/null
-                    $result[$id][$header] = null;
+                // get collection name and add it to the csv output
+                $result[$id]['Collection Name'] = metadata($item, 'collection name');
+
+                foreach ($elements as $element) {
+                    $elementSetName = $element[0];
+                    $elementName = $element[1];
+                    $header = $full ? $elementSetName . ' : ' . $elementName : $elementName;
+                    $result[$id][$header] = metadata($item, $element, array('all' => true, 'no_filter' => $noFilter));
+                    // $result[$id][$header] = $item->getElementTexts($elementSetName, $elementName);
+                    // foreach ($result[$id][$header] as $k => $v) {
+                    //     $result[$id][$header][$k] = (string) $v;
+                    // }
+                    if (count($result[$id][$header]) == 1) {
+                        // the field has 1 value, get it
+                        $result[$id][$header] = reset($result[$id][$header]);
+                    } elseif (count($result[$id][$header]) > 1) {
+                        // if a field has multiple values, parse them to add a multivalue separator.
+                        $result[$id][$header] = implode($separator, $result[$id][$header]);
+                    } else {
+                        // this field is empty/null
+                        $result[$id][$header] = null;
+                    }
                 }
             }
         }
+        // For multiple values, the same header will be used multiple times, so
+        // the output will be different.
+        else {
+            foreach (loop('items') as $item) {
+                $id = metadata($item, 'ID');
+                $result[$id]['id'] = array($id);
+                $result[$id]['Collection Name'] = array(metadata($item, 'collection name'));
+                foreach ($elements as $element) {
+                    $elementSetName = $element[0];
+                    $elementName = $element[1];
+                    $header = $full ? $elementSetName . ' : ' . $elementName : $elementName;
+                    $result[$id][$header] = metadata($item, $element, array('all' => true, 'no_filter' => $noFilter));
+                }
+            }
+            $headers = $this->countHeaders($result);
+        }
 
         $this->view->assign('search', $search);
+        $this->view->assign('headers', $headers);
         $this->view->assign('result', $result);
+    }
+
+    /**
+     * Compute the max number of columns by header.
+     *
+     * @param array $result
+     * @return array
+     */
+    protected function countHeaders(array $result)
+    {
+        $headers = array();
+        foreach ($result as $data) {
+            foreach ($data as $header => $values) {
+                $headers[$header] = isset($headers[$header])
+                    ? max($headers[$header], count($values))
+                    : count($values);
+            }
+        }
+        return $headers;
     }
 
     protected function csv_search($terms)

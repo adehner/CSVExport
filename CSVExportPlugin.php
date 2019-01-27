@@ -31,6 +31,7 @@ class CSVExportPlugin extends Omeka_Plugin_AbstractPlugin
         'csv_export_header_name' => 'simple',
         'csv_export_no_filter' => false,
         'csv_export_all_elements' => false,
+        'csv_export_single_value' => false,
         'csv_export_delimiter' => ',',
         'csv_export_enclosure' => '"',
         'csv_export_separator' => '; ',
