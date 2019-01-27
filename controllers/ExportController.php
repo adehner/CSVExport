@@ -4,6 +4,8 @@ class CSVExport_ExportController extends Omeka_Controller_AbstractActionControll
 {
     protected $multivalueSeparator = '; ';
 
+    protected $usedElementIds;
+
     public function csvAction()
     {
         $search = isset($_GET['search']);
@@ -95,6 +97,11 @@ class CSVExport_ExportController extends Omeka_Controller_AbstractActionControll
             }
         }
 
+        // In case of a search, there may be useless columns to remove.
+        // TODO Remove all empty columns in case of a search with only used elements.
+        // if ($search && !get_option('csv_export_all_elements')) {
+        // }
+
         $this->view->assign('search', $search);
         $this->view->assign('headers', $headers);
         $this->view->assign('result', $result);
@@ -162,16 +169,15 @@ class CSVExport_ExportController extends Omeka_Controller_AbstractActionControll
                 break;
 
             case 'elements':
-                foreach ($elements as $element) {
+                $usedElementIds = $this->getUsedElementIds();
+                foreach ($elements as $elementId => $element) {
                     $elementSetName = $element[0];
                     $elementName = $element[1];
                     $header = $full ? $elementSetName . ' : ' . $elementName : $elementName;
-                    // All elements are filled, even empty.
-                    $data[$header] = metadata($record, $element, array('all' => true, 'no_filter' => $noFilter));
-                    // $data[$header] = $record->getElementTexts($elementSetName, $elementName);
-                    // foreach ($data[$header] as $k => $v) {
-                    //     $data[$header][$k] = (string) $v;
-                    // }
+                    // For performance reasons, check the list of used elements.
+                    $data[$header] = isset($usedElementIds[$elementId])
+                        ? metadata($record, $element, array('all' => true, 'no_filter' => $noFilter))
+                        : array();
                 }
                 break;
         }
@@ -261,18 +267,30 @@ class CSVExport_ExportController extends Omeka_Controller_AbstractActionControll
 
         $allElements = (bool) get_option('csv_export_all_elements');
         if (!$allElements) {
-            $sql = <<<SQL
-SELECT DISTINCT(element_id)
-FROM `omeka_element_texts`
-WHERE record_type IS NULL OR record_type = 'Item'
-SQL;
-            $usedElements = $db->fetchCol($sql);
+            $usedElementIds = $this->getUsedElementIds();
             $simpleElements = array_intersect_key(
                 $simpleElements,
-                array_flip($usedElements)
+                $usedElementIds
             );
         }
 
         return $simpleElements;
+    }
+
+    protected function getUsedElementIds()
+    {
+        if (is_array($this->usedElementIds)) {
+            return $this->usedElementIds;
+        }
+
+        $sql = <<<SQL
+SELECT DISTINCT(element_id)
+FROM `omeka_element_texts`
+WHERE record_type IS NULL OR record_type = 'Item'
+SQL;
+        $db = get_db();
+        $result = $db->fetchCol($sql);
+        $this->usedElementIds = array_combine($result, $result);
+        return $this->usedElementIds;
     }
 }
