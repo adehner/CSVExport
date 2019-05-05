@@ -283,12 +283,13 @@ class CSVExport_ExportController extends Omeka_Controller_AbstractActionControll
             return $this->usedElementIds;
         }
 
+        $db = get_db();
+
         $sql = <<<SQL
 SELECT DISTINCT(element_id)
-FROM `omeka_element_texts`
+FROM `{$db->prefix}element_texts`
 WHERE record_type IS NULL OR record_type = 'Item'
 SQL;
-        $db = get_db();
         $result = $db->fetchCol($sql);
         $this->usedElementIds = array_combine($result, $result);
         return $this->usedElementIds;
