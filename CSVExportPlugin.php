@@ -13,6 +13,7 @@ class CSVExportPlugin extends Omeka_Plugin_AbstractPlugin
      * @var array This plugin's hooks.
      */
     protected $_hooks = array(
+        'initialize',
         'install',
         'upgrade',
         'uninstall',
@@ -46,6 +47,14 @@ class CSVExportPlugin extends Omeka_Plugin_AbstractPlugin
         'csv_export_enclosure' => '"',
         'csv_export_separator' => '; ',
     );
+
+    /**
+     * Add the translations.
+     */
+    public function hookInitialize()
+    {
+        add_translation_source(dirname(__FILE__) . '/languages');
+    }
 
     /**
      * Installs the plugin.
