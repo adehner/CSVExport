@@ -17,11 +17,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: CSVExportPlugin.php:94
+#: CSVExportPlugin.php:104
 msgid "Check and save the config of the plugin: there are new options."
 msgstr ""
 
-#: CSVExportPlugin.php:150 views/admin/index/index.php:2
+#: CSVExportPlugin.php:160 views/admin/index/index.php:2
 msgid "CSV Export"
 msgstr ""
 
@@ -126,53 +126,69 @@ msgid ""
 "editor."
 msgstr ""
 
-#: views/admin/plugins/csv-export-config-form.php:109
+#: views/admin/plugins/csv-export-config-form.php:111
+msgid "Replace end of line with carriage return"
+msgstr ""
+
+#: views/admin/plugins/csv-export-config-form.php:117
+msgid ""
+"If checked, values with multiple lines (generally the Dublin Core "
+"description) will be converted into a single line, where the end of line is "
+"replaced by a carriage return."
+msgstr ""
+
+#: views/admin/plugins/csv-export-config-form.php:118
+msgid ""
+"It allows some old spreadsheet softwares to open the file without issue."
+msgstr ""
+
+#: views/admin/plugins/csv-export-config-form.php:124
 msgid "Csv Format"
 msgstr ""
 
-#: views/admin/plugins/csv-export-config-form.php:113
+#: views/admin/plugins/csv-export-config-form.php:128
 msgid "Delimiter"
 msgstr ""
 
-#: views/admin/plugins/csv-export-config-form.php:120
+#: views/admin/plugins/csv-export-config-form.php:135
 msgid "Comma ,"
 msgstr ""
 
-#: views/admin/plugins/csv-export-config-form.php:121
+#: views/admin/plugins/csv-export-config-form.php:136
 msgid "Semi-colon ;"
 msgstr ""
 
-#: views/admin/plugins/csv-export-config-form.php:122
+#: views/admin/plugins/csv-export-config-form.php:137
 msgid "Tabulation"
 msgstr ""
 
-#: views/admin/plugins/csv-export-config-form.php:125
+#: views/admin/plugins/csv-export-config-form.php:140
 msgid ""
 "It’s generally recommended to use the tabulation, because it is not used "
 "anywhere in metadata."
 msgstr ""
 
-#: views/admin/plugins/csv-export-config-form.php:133
+#: views/admin/plugins/csv-export-config-form.php:148
 msgid "Enclosure"
 msgstr ""
 
-#: views/admin/plugins/csv-export-config-form.php:140
+#: views/admin/plugins/csv-export-config-form.php:155
 msgid "Double quote \""
 msgstr ""
 
-#: views/admin/plugins/csv-export-config-form.php:141
+#: views/admin/plugins/csv-export-config-form.php:156
 msgid "Hash #"
 msgstr ""
 
-#: views/admin/plugins/csv-export-config-form.php:149
+#: views/admin/plugins/csv-export-config-form.php:164
 msgid "Multivalue separator"
 msgstr ""
 
-#: views/admin/plugins/csv-export-config-form.php:154
+#: views/admin/plugins/csv-export-config-form.php:169
 msgid "Unlike delimiter and enclosure, it can have multiple characters."
 msgstr ""
 
-#: views/admin/plugins/csv-export-config-form.php:155
+#: views/admin/plugins/csv-export-config-form.php:170
 msgid "It is recommended to use a never used string, like \" | \"."
 msgstr ""
 

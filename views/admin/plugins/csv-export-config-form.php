@@ -104,6 +104,21 @@
             </p>
         </div>
     </div>
+
+    <div class="field">
+        <div class="two columns alpha">
+            <?php echo $this->formLabel('csv_export_end_of_line',
+                __('Replace end of line with carriage return')); ?>
+        </div>
+        <div class="inputs five columns omega">
+            <?php echo $this->formCheckbox('csv_export_end_of_line', true,
+                array('checked' => (bool) get_option('csv_export_end_of_line'))); ?>
+            <p class="explanation">
+                <?php echo __('If checked, values with multiple lines (generally the Dublin Core description) will be converted into a single line, where the end of line is replaced by a carriage return.'); ?>
+                <?php echo __('It allows some old spreadsheet softwares to open the file without issue.'); ?>
+            </p>
+        </div>
+    </div>
 </fieldset>
 
 <fieldset id="fieldset-csv-format"><legend><?php echo __('Csv Format'); ?></legend>

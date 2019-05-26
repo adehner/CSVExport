@@ -18,11 +18,12 @@ class CSVExport_ExportController extends Omeka_Controller_AbstractActionControll
         $metadata = json_decode(get_option('csv_export_metadata'), true) ?: array();
         $full = get_option('csv_export_header_name') === 'full';
         $noFilter = (bool) get_option('csv_export_no_filter');
+        $endOfLine = (bool) get_option('csv_export_end_of_line');
 
         // Cache element set info to speed up loop.
         $elements = in_array('elements', $metadata) ? $this->prepareElements() : array();
 
-        $options = compact('metadata', 'elements', 'full', 'noFilter');
+        $options = compact('metadata', 'elements', 'full', 'noFilter', 'endOfLine');
 
         $headers = array();
         $result = array();
@@ -126,6 +127,7 @@ class CSVExport_ExportController extends Omeka_Controller_AbstractActionControll
          * @var array $elements
          * @var bool $full
          * @var bool $noFilter
+         * @var bool $endOfLine
          */
         extract($options);
 
@@ -175,9 +177,16 @@ class CSVExport_ExportController extends Omeka_Controller_AbstractActionControll
                     $elementName = $element[1];
                     $header = $full ? $elementSetName . ' : ' . $elementName : $elementName;
                     // For performance reasons, check the list of used elements.
-                    $data[$header] = isset($usedElementIds[$elementId])
+                    $elementValues = isset($usedElementIds[$elementId])
                         ? metadata($record, $element, array('all' => true, 'no_filter' => $noFilter))
                         : array();
+                    if ($endOfLine) {
+                        $elementValues = array_map(function ($v) {
+                            return str_replace(array("\n\r", "\r\n", "\n", "\r\r"), "\r", $v);
+                        }, $elementValues);
+                    }
+
+                    $data[$header] = $elementValues;
                 }
                 break;
         }

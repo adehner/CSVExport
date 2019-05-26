@@ -22,6 +22,7 @@ La page de configuration permet notamment de configurer les colonnes du tableur.
 - activation des filtres Omeka : Omeka permet de modifier l’affichage de certains éléments par des filtres, par exemple pour créer des liens sur certaines données. L’option évite de les appliquer et permet donc de conserver la donnée telle qu’elle est enregistrée.
 - éléments non utilisés : le plus souvent, de nombreux éléments ne sont pas utilisées dans les notices, mais il peut être utile d’avoir des colonnes vides, par exemple en cas de modification et réimport.
 - valeurs multiples : certains éléments ont souvent plusieurs valeurs, par exemple un article avec plusieurs auteurs. L’option permet de retourner d’avoir plusieurs colonnes avec le même nom mais une valeur par cellule, ou à l’inverse une seule colonne par élément et plusieurs valeurs dans la cellule, séparées par le séparateur multivaleur.
+- saut de ligne : certains tableurs ne permettent pas les sauts de ligne à l'intérieur des cellules. Une option permet de les convertir en « retour chariot ».
 
 ### Pour exporter tous les documents de votre base Omeka, suivez ces étapes :
 
