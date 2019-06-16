@@ -166,17 +166,31 @@ class CSVExportPlugin extends Omeka_Plugin_AbstractPlugin
     /**
      * Adds a button to the admin search page for CSV export
      */
-    public function hookAdminItemsBrowse($items)
+    public function hookAdminItemsBrowse($args)
     {
-        if (isset($_GET['search']) && count($items)) {
-            $params = array();
-            foreach ($_GET as $key => $value) {
-                $params[$key] = $value;
-            }
-            try {
-                $params['hits'] = ZEND_REGISTRY::get('total_results');
-            } catch (Zend_Exception $e) {
-                $params['hits'] = 0;
+        // $items = $args['items'];
+        $view = $args['view'];
+        $totalResults = $view->total_results;
+        if (!$totalResults) {
+            return;
+        }
+
+        $params = Zend_Controller_Front::getInstance()->getRequest()->getParams();
+        unset($params['admin']);
+        unset($params['module']);
+        unset($params['controller']);
+        unset($params['action']);
+        unset($params['page']);
+
+        $paramsCheck = $params;
+        unset($paramsCheck['sort_field']);
+        unset($paramsCheck['sort_dir']);
+
+        if ($paramsCheck) {
+            $params['hits'] = (int) @$view->total_results;
+            // Search is needed because the action check it.
+            if (!isset($params['search'])) {
+                $params['search'] = '';
             }
             echo "<a  class='button blue' style='margin-top:20px;' href='" . url('csv-export/export/csv', $params) . "'><input style='background-color:transparent;color:white;border:none;' type='button' value='Export results as CSV' /></a>";
         } else {
