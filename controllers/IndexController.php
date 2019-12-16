@@ -4,15 +4,15 @@ class CSVExport_IndexController extends Omeka_Controller_AbstractActionControlle
 {
     public function indexAction()
     {
-    	$form = new Zend_Form;
-		$form->setAction(url(array('module'=>'csv-export', 'controller'=>'export', 'action'=>'csv'), 'default'))
-			 ->setMethod('post');
-		
-		$element = new Zend_Form_Element_File('csv');
+        $form = new Zend_Form;
+        $form->setAction(url(array('module' => 'csv-export', 'controller' => 'export', 'action' => 'csv'), 'default'))
+            ->setMethod('post');
 
-		$form->setAttrib('enctype', 'multipart/form-data');
-		$form->addElement($element, 'csv');
+        $element = new Zend_Form_Element_File('csv');
 
-		$this->view->assign('form', $form);
+        $form->setAttrib('enctype', 'multipart/form-data');
+        $form->addElement($element, 'csv');
+
+        $this->view->assign('form', $form);
     }
 }

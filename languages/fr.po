@@ -1,0 +1,224 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-05-27 00:00+0000\n"
+"PO-Revision-Date: 2019-05-27 00:00+0000\n"
+"Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
+"Language-Team: \n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.2.1\n"
+
+#: CSVExportPlugin.php:104
+msgid "Check and save the config of the plugin: there are new options."
+msgstr ""
+"Vérifier et sauver la configuration du plugin : plusieurs nouvelles options "
+"ont été ajoutées."
+
+#: CSVExportPlugin.php:160 views/admin/index/index.php:2
+msgid "CSV Export"
+msgstr "CSV Export"
+
+#: views/admin/plugins/csv-export-config-form.php:7
+msgid "Export"
+msgstr "Export"
+
+#: views/admin/plugins/csv-export-config-form.php:9
+msgid "Id"
+msgstr "Id"
+
+#: views/admin/plugins/csv-export-config-form.php:10
+msgid "Item type name"
+msgstr "Type de contenu"
+
+#: views/admin/plugins/csv-export-config-form.php:11
+msgid "Collection name"
+msgstr "Collection"
+
+#: views/admin/plugins/csv-export-config-form.php:12
+msgid "Files"
+msgstr "Fichiers"
+
+#: views/admin/plugins/csv-export-config-form.php:13
+msgid "File sources"
+msgstr "Sources des fichiers"
+
+#: views/admin/plugins/csv-export-config-form.php:14
+msgid "Tags"
+msgstr "Mots-clés"
+
+#: views/admin/plugins/csv-export-config-form.php:15
+msgid "Elements"
+msgstr "Éléments"
+
+#: views/admin/plugins/csv-export-config-form.php:20
+msgid "Metadata to output"
+msgstr "Métadonnées exportées"
+
+#: views/admin/plugins/csv-export-config-form.php:32
+msgid "Element Sets to include"
+msgstr "Jeux de métadonnées à inclure"
+
+#: views/admin/plugins/csv-export-config-form.php:36
+msgid "Check the box below to include a given element set in exports."
+msgstr "Cocher la case pour inclure un jeu de métadonnées dans les exports."
+
+#: views/admin/plugins/csv-export-config-form.php:46
+msgid "Format"
+msgstr "Format"
+
+#: views/admin/plugins/csv-export-config-form.php:50
+msgid "Header name"
+msgstr "Entête"
+
+#: views/admin/plugins/csv-export-config-form.php:57
+msgid "Element name only (\"Title\")"
+msgstr "Nom de l'élément seul (\"Title\")"
+
+#: views/admin/plugins/csv-export-config-form.php:58
+msgid "Element set name and element name (\"Dublin Core : Title\")"
+msgstr ""
+"Nom du jeu de métadonnées et nom de l'élément (\"Dublin Core : Title\")"
+
+#: views/admin/plugins/csv-export-config-form.php:61
+msgid "This option is useful when there are duplicate element names."
+msgstr "Cette option est utile lorsque des noms d'éléments sont en doublon."
+
+#: views/admin/plugins/csv-export-config-form.php:69
+msgid "Skip Omeka filters"
+msgstr "Ne pas appliquer les filtres d'Omeka"
+
+#: views/admin/plugins/csv-export-config-form.php:75
+msgid ""
+"This option avoids to call the filters of the plugins (in particular fixes "
+"compatibility with the plugin SearchByMetadata)."
+msgstr ""
+"Cette option évite d'appliquer les filtres des plugins (en particulier, cela "
+"contourne un problème de compatibilité avec le plugin SearchByMetadata)."
+
+#: views/admin/plugins/csv-export-config-form.php:83
+msgid "Return all elements, even unused"
+msgstr "Retourner tous les éléments, même non utilisés"
+
+#: views/admin/plugins/csv-export-config-form.php:94
+msgid "Return a single value in each column"
+msgstr "Retourner une valeur simple dans chaque colonne"
+
+#: views/admin/plugins/csv-export-config-form.php:100
+msgid ""
+"If checked, each cell will have only one value, so there will be multiple "
+"columns for each element."
+msgstr ""
+"Lorsque cette option est activée, chaque cellule du tableur aura une seule "
+"valeur et il pourra donc y avoir plusieurs colonnes pour chaque élément."
+
+#: views/admin/plugins/csv-export-config-form.php:102
+msgid ""
+"Warning: if there are many files, tags and elements by record, the number of "
+"columns can be very big and not manageable by spreadsheet software (1024 for "
+"LibreOffice, 256 for Excel 2003, 16384 for Excel 2007."
+msgstr ""
+"Attention : s'il y a plusieurs fichiers, mots-clés et éléments par document, "
+"le nombre de colonnes pourrait être très grand et non gérable par certains "
+"tableurs (1024 pour LibreOffice, 256 pour Excel 2003, 16384 pour Excel 2007)."
+
+#: views/admin/plugins/csv-export-config-form.php:103
+msgid ""
+"There is no issue when the csv is managed by script or with a standard "
+"editor."
+msgstr ""
+"Il n'y a pas de problème quand le fichier csv est géré par script ou avec un "
+"éditeur standard."
+
+#: views/admin/plugins/csv-export-config-form.php:111
+msgid "Replace end of line with carriage return"
+msgstr "Remplacer le saut de ligne par un retour chariot"
+
+#: views/admin/plugins/csv-export-config-form.php:117
+msgid ""
+"If checked, values with multiple lines (generally the Dublin Core "
+"description) will be converted into a single line, where the end of line is "
+"replaced by a carriage return."
+msgstr ""
+"Si coché, les valeurs avec plusieurs lignes (généralement l'élément Dublin "
+"Core description) seront converties en une seule ligne, où le saut de ligne "
+"est remplacé par un retour chariot."
+
+#: views/admin/plugins/csv-export-config-form.php:118
+msgid ""
+"It allows some old spreadsheet softwares to open the file without issue."
+msgstr "Cela permet certains anciens tableurs d'ouvrir le fichier sans erreur."
+
+#: views/admin/plugins/csv-export-config-form.php:124
+msgid "Csv Format"
+msgstr "Format csv"
+
+#: views/admin/plugins/csv-export-config-form.php:128
+msgid "Delimiter"
+msgstr "Délimiteur"
+
+#: views/admin/plugins/csv-export-config-form.php:135
+msgid "Comma ,"
+msgstr "Virgule ,"
+
+#: views/admin/plugins/csv-export-config-form.php:136
+msgid "Semi-colon ;"
+msgstr "Point-virgule ;"
+
+#: views/admin/plugins/csv-export-config-form.php:137
+msgid "Tabulation"
+msgstr "Tabulation"
+
+#: views/admin/plugins/csv-export-config-form.php:140
+msgid ""
+"It’s generally recommended to use the tabulation, because it is not used "
+"anywhere in metadata."
+msgstr ""
+"Il est généralement recommandé d'utiliser des tabulations, car elles ne sont "
+"pas utilisées dans les métadonnées."
+
+#: views/admin/plugins/csv-export-config-form.php:148
+msgid "Enclosure"
+msgstr "Séparateur"
+
+#: views/admin/plugins/csv-export-config-form.php:155
+msgid "Double quote \""
+msgstr "Guillemet \""
+
+#: views/admin/plugins/csv-export-config-form.php:156
+msgid "Hash #"
+msgstr "Dièse #"
+
+#: views/admin/plugins/csv-export-config-form.php:164
+msgid "Multivalue separator"
+msgstr "Séparateur multivaleurs"
+
+#: views/admin/plugins/csv-export-config-form.php:169
+msgid "Unlike delimiter and enclosure, it can have multiple characters."
+msgstr ""
+"Contrairement au délimiteur et au séparateur, il peut avoir plusieurs "
+"caractères."
+
+#: views/admin/plugins/csv-export-config-form.php:170
+msgid "It is recommended to use a never used string, like \" | \"."
+msgstr ""
+"Il est recommandé d'utiliser une chaîne qui n'est jamais utilisée, comme \" "
+"| \"."
+
+#: views/admin/index/index.php:11
+msgid "Export all data as CSV"
+msgstr "Exporter les données en CSV"
+
+#: views/admin/index/index.php:13
+#, php-format
+msgid "Params can be set in the %sconfig%s of the plugin."
+msgstr ""
+"Les paramètres sont définis dans la page de %sconfiguration%s du plugin."
